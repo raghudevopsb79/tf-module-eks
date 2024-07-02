@@ -25,7 +25,7 @@ resource "aws_eks_node_group" "node-groups" {
   for_each        = var.node_groups
   instance_types  = each.value["instance_types"]
   capacity_type   = each.value["capacity_type"]
-  node_group_name = each.name
+  node_group_name = each.key
   scaling_config {
     desired_size = each.value["node_min_size"]
     max_size     = each.value["node_max_size"]
