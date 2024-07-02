@@ -14,9 +14,11 @@ data "http" "metric-server" {
   url = "https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
 }
 
-resource "local_file" "foo" {
-  content  = yamldecode(data.http.metric-server.body)
-  filename = "/tmp/test.json"
+
+provider "kubectl" {}
+
+resource "kubectl_manifest" "sa_login_secret" {
+  yaml_body = data.http.metric-server.body
 }
 
 
