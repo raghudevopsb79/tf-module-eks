@@ -27,8 +27,8 @@ resource "kubectl_manifest" "metric-server" {
 
 data "kubectl_file_documents" "cluster-autoscaler" {
   content = templatefile("${path.module}/cluster-autoscale.yaml", {
-    IAM_ROLE = ""
-    CLUSTER_NAME = ""
+    IAM_ROLE     = aws_iam_role.eks-cluster-autoscaler.arn
+    CLUSTER_NAME = aws_eks_cluster.main.name
   })
 }
 
