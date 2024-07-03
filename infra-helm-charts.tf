@@ -17,13 +17,15 @@ data "http" "metric-server" {
 resource "kubectl_manifest" "metric-server" {
   depends_on = [null_resource.get-kubeconfig]
   yaml_body = data.http.metric-server.body
+  force_new = true
+  wait = true
 }
 
-resource "kubectl_manifest" "cluster-autoscaler" {
-  depends_on = [null_resource.get-kubeconfig]
-  yaml_body = templatefile("${path.module}/cluster-autoscale.yaml", {
-    IAM_ROLE = ""
-    CLUSTER_NAME = ""
-  })
-}
+# resource "kubectl_manifest" "cluster-autoscaler" {
+#   depends_on = [null_resource.get-kubeconfig]
+#   yaml_body = templatefile("${path.module}/cluster-autoscale.yaml", {
+#     IAM_ROLE = ""
+#     CLUSTER_NAME = ""
+#   })
+# }
 
