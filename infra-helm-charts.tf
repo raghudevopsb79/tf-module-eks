@@ -32,10 +32,10 @@ data "kubectl_file_documents" "cluster-autoscaler" {
   })
 }
 
-# resource "kubectl_manifest" "cluster-autoscaler" {
-#   depends_on = [null_resource.get-kubeconfig]
-#
-#   count     = length(data.kubectl_file_documents.cluster-autoscaler.documents)
-#   yaml_body = data.kubectl_file_documents.cluster-autoscaler.documents[count.index]
-# }
+resource "kubectl_manifest" "cluster-autoscaler" {
+  depends_on = [null_resource.get-kubeconfig]
+
+  count     = length(data.kubectl_file_documents.cluster-autoscaler.documents)
+  yaml_body = data.kubectl_file_documents.cluster-autoscaler.documents[count.index]
+}
 
