@@ -14,10 +14,8 @@ data "http" "metric-server" {
   url = "https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
 }
 
-
-provider "kubectl" {}
-
 resource "kubectl_manifest" "sa_login_secret" {
+  depends_on = [null_resource.get-kubeconfig]
   yaml_body = data.http.metric-server.body
 }
 
