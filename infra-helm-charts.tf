@@ -26,16 +26,16 @@ resource "kubectl_manifest" "metric-server" {
 }
 
 data "kubectl_file_documents" "cluster-autoscaler" {
-  content = "${path.module}/cluster-autoscale.yaml"
+  content = templatefile("${path.module}/cluster-autoscale.yaml", {
+    IAM_ROLE     = aws_iam_role.eks-cluster-autoscaler.arn
+    CLUSTER_NAME = aws_eks_cluster.main.name
+  })
 }
 
 # resource "kubectl_manifest" "cluster-autoscaler" {
 #   depends_on = [null_resource.get-kubeconfig]
 #
 #   count     = length(data.kubectl_file_documents.cluster-autoscaler.documents)
-#   yaml_body = templatefile(data.kubectl_file_documents.cluster-autoscaler.documents[count.index], {
-#     IAM_ROLE     = aws_iam_role.eks-cluster-autoscaler.arn
-#     CLUSTER_NAME = aws_eks_cluster.main.name
-#   })
+#   yaml_body = data.kubectl_file_documents.cluster-autoscaler.documents[count.index]
 # }
 
