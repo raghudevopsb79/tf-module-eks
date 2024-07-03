@@ -59,7 +59,7 @@ data "http" "argocd" {
 }
 
 data "kubectl_file_documents" "argocd" {
-  content = data.http.argocd.body
+  content = file("${path.module}/argo.yaml")
 }
 
 # resource "kubectl_manifest" "argocd" {
