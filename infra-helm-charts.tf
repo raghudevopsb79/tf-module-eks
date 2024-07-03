@@ -14,10 +14,16 @@ data "http" "metric-server" {
   url = "https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
 }
 
-resource "kubectl_manifest" "sa_login_secret" {
+resource "kubectl_manifest" "metric-server" {
   depends_on = [null_resource.get-kubeconfig]
   yaml_body = data.http.metric-server.body
 }
 
-
+resource "kubectl_manifest" "cluster-autoscaler" {
+  depends_on = [null_resource.get-kubeconfig]
+  yaml_body = templatefile("${path.module}/cluster-autoscale.yaml", {
+    IAM_ROLE = ""
+    CLUSTER_NAME = ""
+  })
+}
 
