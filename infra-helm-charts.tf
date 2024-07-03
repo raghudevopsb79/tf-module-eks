@@ -54,8 +54,12 @@ metadata:
 YAML
 }
 
+data "http" "argocd" {
+  url = "https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
+}
+
 data "kubectl_file_documents" "argocd" {
-  content = "${path.module}/argo.yaml"
+  content = data.http.argocd.body
 }
 
 # resource "kubectl_manifest" "argocd" {
