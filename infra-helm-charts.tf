@@ -25,6 +25,8 @@ resource "kubectl_manifest" "metric-server" {
   yaml_body = data.kubectl_file_documents.metric-server.documents[count.index]
 }
 
+## Cluster Autoscaler
+
 data "kubectl_file_documents" "cluster-autoscaler" {
   content = templatefile("${path.module}/cluster-autoscale.yaml", {
     IAM_ROLE     = aws_iam_role.eks-cluster-autoscaler.arn
@@ -32,19 +34,11 @@ data "kubectl_file_documents" "cluster-autoscaler" {
   })
 }
 
-## Cluster Autoscaler
 resource "kubectl_manifest" "cluster-autoscaler" {
   depends_on = [null_resource.get-kubeconfig]
 
   count     = length(data.kubectl_file_documents.cluster-autoscaler.documents)
   yaml_body = data.kubectl_file_documents.cluster-autoscaler.documents[count.index]
-}
-
-data "kubectl_file_documents" "cluster-autoscaler" {
-  content = templatefile("${path.module}/cluster-autoscale.yaml", {
-    IAM_ROLE     = aws_iam_role.eks-cluster-autoscaler.arn
-    CLUSTER_NAME = aws_eks_cluster.main.name
-  })
 }
 
 # Argocd
