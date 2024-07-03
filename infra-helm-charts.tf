@@ -54,17 +54,13 @@ metadata:
 YAML
 }
 
-data "http" "argocd" {
-  url = "https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
-}
-
 data "kubectl_file_documents" "argocd" {
   content = file("${path.module}/argo.yaml")
 }
 
-# resource "kubectl_manifest" "argocd" {
-#   depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace]
-#
-#   count     = length(data.kubectl_file_documents.argocd.documents)
-#   yaml_body = data.kubectl_file_documents.argocd.documents[count.index]
-# }
+resource "kubectl_manifest" "argocd" {
+  depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace]
+
+  count     = length(data.kubectl_file_documents.argocd.documents)
+  yaml_body = data.kubectl_file_documents.argocd.documents[count.index]
+}
