@@ -61,6 +61,7 @@ data "kubectl_file_documents" "argocd" {
 resource "kubectl_manifest" "argocd" {
   depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace]
 
-  count     = length(data.kubectl_file_documents.argocd.documents)
-  yaml_body = data.kubectl_file_documents.argocd.documents[count.index]
+  count              = length(data.kubectl_file_documents.argocd.documents)
+  yaml_body          = data.kubectl_file_documents.argocd.documents[count.index]
+  override_namespace = "argocd"
 }
