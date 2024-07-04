@@ -27,12 +27,17 @@ resource "kubectl_manifest" "metric-server" {
 
 ## Cluster Autoscaler
 
-data "kubectl_file_documents" "cluster-autoscaler" {
-  depends_on = [aws_eks_cluster.main]
-  content = templatefile("${path.module}/cluster-autoscale.yaml", {
+resource "local_file" "cluster-autoscaler" {
+  content  = templatefile("${path.module}/cluster-autoscale.yaml", {
     IAM_ROLE     = aws_iam_role.eks-cluster-autoscaler.arn
     CLUSTER_NAME = aws_eks_cluster.main.name
   })
+  filename = "${path.module}/cluster-autoscale-local.yaml"
+}
+
+data "kubectl_file_documents" "cluster-autoscaler" {
+  depends_on = [aws_eks_cluster.main, local_file.cluster-autoscaler]
+  content = file("${path.module}/cluster-autoscale-local.yaml")
 }
 
 resource "kubectl_manifest" "cluster-autoscaler" {
