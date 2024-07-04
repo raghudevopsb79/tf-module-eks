@@ -36,7 +36,7 @@ data "kubectl_file_documents" "cluster-autoscaler" {
 }
 
 resource "kubectl_manifest" "cluster-autoscaler" {
-  depends_on = [null_resource.get-kubeconfig]
+  depends_on = [null_resource.get-kubeconfig, aws_eks_cluster.main]
 
   count     = length(data.kubectl_file_documents.cluster-autoscaler.documents)
   yaml_body = data.kubectl_file_documents.cluster-autoscaler.documents[count.index]
@@ -45,7 +45,7 @@ resource "kubectl_manifest" "cluster-autoscaler" {
 # Argocd
 
 resource "kubectl_manifest" "argocd-namespace" {
-  depends_on = [null_resource.get-kubeconfig]
+  depends_on = [null_resource.get-kubeconfig, aws_eks_cluster.main]
 
   yaml_body = <<YAML
 apiVersion: v1
@@ -60,7 +60,7 @@ data "kubectl_file_documents" "argocd" {
 }
 
 resource "kubectl_manifest" "argocd" {
-  depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace]
+  depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace, aws_eks_cluster.main]
 
   count              = length(data.kubectl_file_documents.argocd.documents)
   yaml_body          = data.kubectl_file_documents.argocd.documents[count.index]
