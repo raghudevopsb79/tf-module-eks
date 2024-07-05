@@ -67,6 +67,7 @@ resource "kubectl_manifest" "argocd" {
 ## Nginx Ingress
 
 resource "helm_release" "nginx-ingress" {
+  depends_on = [null_resource.get-kubeconfig]
   name       = "ingress"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx/ingress-nginx"
