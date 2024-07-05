@@ -53,11 +53,11 @@ YAML
 }
 
 data "kubectl_file_documents" "argocd" {
-  content = file("${path.module}/argo.yaml")
+  content = file("${path.module}/argo-${var.env}.yaml")
 }
 
 resource "kubectl_manifest" "argocd" {
-  depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace]
+  depends_on = [null_resource.get-kubeconfig, kubectl_manifest.argocd-namespace, null_resource.nginx-ingress]
 
   count              = length(data.kubectl_file_documents.argocd.documents)
   yaml_body          = data.kubectl_file_documents.argocd.documents[count.index]
