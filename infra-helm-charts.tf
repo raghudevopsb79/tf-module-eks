@@ -63,3 +63,17 @@ resource "kubectl_manifest" "argocd" {
   yaml_body          = data.kubectl_file_documents.argocd.documents[count.index]
   override_namespace = "argocd"
 }
+
+## Nginx Ingress
+
+resource "helm_release" "nginx-ingress" {
+  name       = "ingress"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx/ingress-nginx"
+
+  values = [
+    file("${path.module}/nginx-ingress.yaml")
+  ]
+
+}
+
