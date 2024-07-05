@@ -66,15 +66,15 @@ resource "kubectl_manifest" "argocd" {
 
 ## Nginx Ingress
 
-resource "helm_release" "nginx-ingress" {
+resource "null_resource" "nginx-ingress" {
   depends_on = [null_resource.get-kubeconfig]
-  name       = "ingress"
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = "ingress-nginx/ingress-nginx"
 
-  values = [
-    file("${path.module}/nginx-ingress.yaml")
-  ]
+  provisioner "local-exec" {
+    command = <<EOF
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm upgrade -i ngx-ingres ingress-nginx/ingress-nginx -f nginx-ingress.yaml
+EOF
+  }
 
 }
 
