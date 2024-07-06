@@ -6,6 +6,7 @@ resource "null_resource" "get-kubeconfig" {
     command = <<EOF
 rm -rf ~/.kube
 aws eks update-kubeconfig --name "${var.env}-eks"
+sleep 300
 EOF
   }
 
