@@ -65,4 +65,5 @@ resource "aws_eks_access_entry" "ci-server" {
   cluster_name      = aws_eks_cluster.main.name
   principal_arn     = "arn:aws:iam::739561048503:role/ci-server-role"
   type              = "STANDARD"
+  kubernetes_groups = ["system:masters"]
 }
