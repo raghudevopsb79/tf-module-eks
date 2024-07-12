@@ -67,3 +67,14 @@ resource "aws_eks_access_entry" "ci-server" {
   type              = "STANDARD"
   kubernetes_groups = ["system:masters"]
 }
+
+resource "aws_eks_access_policy_association" "ci-server-policy" {
+  cluster_name  = aws_eks_cluster.main.name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  principal_arn = "arn:aws:iam::739561048503:role/ci-server-role"
+
+  access_scope {
+    type       = "cluster"
+  }
+}
+
