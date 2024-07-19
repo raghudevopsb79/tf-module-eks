@@ -100,7 +100,7 @@ resource "null_resource" "prometheus-stack" {
   provisioner "local-exec" {
     command = <<EOF
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm upgrade -i prometheus prometheus-community/kube-prometheus-stack -f ${path.module}/prometheus-dev.yml
+helm upgrade -i prometheus prometheus-community/kube-prometheus-stack -f ${path.module}/prometheus-dev.yaml
 EOF
   }
 
