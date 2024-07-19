@@ -1,0 +1,7 @@
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - grafana-dev.rdevopsb79.online
+

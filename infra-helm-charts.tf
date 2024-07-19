@@ -91,3 +91,18 @@ resource "kubectl_manifest" "external-dns" {
   yaml_body          = data.kubectl_file_documents.external-dns.documents[count.index]
 }
 
+
+## Prometheus Helm Stack
+
+resource "null_resource" "prometheus-stack" {
+  depends_on = [null_resource.get-kubeconfig]
+
+  provisioner "local-exec" {
+    command = <<EOF
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm upgrade -i prometheus prometheus-community/kube-prometheus-stack -f ${path.module}/prometheus-dev.yml
+EOF
+  }
+
+}
+
