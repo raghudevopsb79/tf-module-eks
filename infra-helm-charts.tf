@@ -109,7 +109,7 @@ EOF
 
 ## Filebeat Helm Chart
 
-resource "null_resource" "prometheus-stack" {
+resource "null_resource" "filebeat" {
   depends_on = [null_resource.get-kubeconfig]
 
   provisioner "local-exec" {
