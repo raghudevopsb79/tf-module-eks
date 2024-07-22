@@ -106,3 +106,19 @@ EOF
 
 }
 
+
+## Filebeat Helm Chart
+
+resource "null_resource" "prometheus-stack" {
+  depends_on = [null_resource.get-kubeconfig]
+
+  provisioner "local-exec" {
+    command = <<EOF
+helm repo add elastic https://helm.elastic.co
+helm install filebeat elastic/filebeat -f ${path.module}/filebeat.yml
+EOF
+  }
+
+}
+
+
