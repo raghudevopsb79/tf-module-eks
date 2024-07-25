@@ -166,25 +166,25 @@ resource "aws_iam_policy" "external-dns" {
   description = "${var.env}-eks-external-dns-policy"
 
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "route53:ChangeResourceRecordSets"
         ],
-        "Resource": [
+        "Resource" : [
           "arn:aws:route53:::hostedzone/*"
         ]
       },
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "route53:ListHostedZones",
           "route53:ListResourceRecordSets",
           "route53:ListTagsForResource"
         ],
-        "Resource": [
+        "Resource" : [
           "*"
         ]
       }

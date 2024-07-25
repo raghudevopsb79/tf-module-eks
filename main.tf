@@ -62,9 +62,9 @@ resource "aws_iam_openid_connect_provider" "eks" {
 
 
 resource "aws_eks_access_entry" "ci-server" {
-  cluster_name      = aws_eks_cluster.main.name
-  principal_arn     = "arn:aws:iam::739561048503:role/ci-server-role"
-  type              = "STANDARD"
+  cluster_name  = aws_eks_cluster.main.name
+  principal_arn = "arn:aws:iam::739561048503:role/ci-server-role"
+  type          = "STANDARD"
 }
 
 resource "aws_eks_access_policy_association" "ci-server-policy" {
@@ -73,7 +73,7 @@ resource "aws_eks_access_policy_association" "ci-server-policy" {
   principal_arn = "arn:aws:iam::739561048503:role/ci-server-role"
 
   access_scope {
-    type       = "cluster"
+    type = "cluster"
   }
 }
 
